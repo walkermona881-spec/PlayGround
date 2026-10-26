@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#041018" />
+  <meta name="description" content="DLS26 — a fan-made browser football game inspired by Dream League Soccer 2026. Pick a club, set your formation, and play a full 11-a-side match." />
+  <title>DLS26 // DREAM LEAGUE SOCCER</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body data-app-ready="false">
+  <div id="app">
+    <canvas id="pitch-canvas" aria-label="DLS26 match viewport"></canvas>
+    <div class="stadium-vignette" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+
+    <div id="boot" class="screen boot">
+      <div class="boot-inner">
+        <div class="boot-mark">DLS<span>26</span></div>
+        <p class="eyebrow">DREAM LEAGUE SOCCER // FAN BUILD</p>
+        <div class="boot-track"><span id="boot-fill"></span></div>
+        <p class="boot-copy" id="boot-copy">WARMING UP THE PITCH</p>
+      </div>
+    </div>
+
+    <section id="home" class="screen home hidden">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark">DLS<span>26</span></div>
+          <div class="brand-sub">DREAM LEAGUE SOCCER</div>
+        </div>
+        <nav class="main-nav" aria-label="Main">
+          <button class="nav-btn active" type="button" data-nav="play">PLAY</button>
+          <button class="nav-btn" type="button" data-nav="squad">SQUAD</button>
+          <button class="nav-btn" type="button" data-nav="settings">SETTINGS</button>
+          <a class="nav-btn back-link" href="../">CODM CLONE</a>
+        </nav>
+        <div class="profile">
+          <div class="currency"><span class="coin">●</span> 2,450</div>
+          <div class="currency"><span class="gem">◆</span> 120</div>
+          <div class="club-chip" id="profile-club">
+            <div class="club-chip-crest" id="profile-badge"></div>
+            <div><strong id="profile-team">NORTHSIDE</strong><span>OWNER</span></div>
+          </div>
+        </div>
+      </header>
+
+      <main class="home-main">
+        <section class="hero">
+          <div class="season-tag"><span class="live-dot"></span> SEASON 26 // LIVE</div>
+          <p class="eyebrow">BUILD YOUR LEGACY</p>
+          <h1>OWN<br />THE <span>PITCH</span></h1>
+          <p class="hero-copy">Eleven-a-side football with a full squad, real formations and a stadium that never sleeps. Take your club from the tunnel to the trophy.</p>
+          <div class="hero-facts">
+            <div><span>FORMAT</span><strong>11 V 11</strong></div>
+            <div><span>MATCHDAY</span><strong>QUICK PLAY</strong></div>
+            <div><span>ENGINE</span><strong>FULL 3D</strong></div>
+          </div>
+          <div class="home-actions">
+            <button class="btn btn-lime" id="kickoff-btn" type="button">KICK OFF <span>↗</span></button>
+            <button class="btn btn-ghost" id="change-clubs" type="button">CHANGE CLUBS</button>
+          </div>
+        </section>
+
+        <aside class="match-card">
+          <div class="card-top"><span>QUICK MATCH</span><span class="card-tag">FRIENDLY</span></div>
+          <div class="versus">
+            <div class="versus-side">
+              <div class="versus-crest" id="home-badge"></div>
+              <strong id="home-name">NORTHSIDE</strong>
+              <span class="ovr-pill" id="home-rating">85 OVR</span>
+              <small id="home-star">★ J. VALE</small>
+            </div>
+            <div class="versus-mark">VS</div>
+            <div class="versus-side away">
+              <div class="versus-crest" id="away-badge"></div>
+              <strong id="away-name">KINGSLEY</strong>
+              <span class="ovr-pill" id="away-rating">87 OVR</span>
+              <small id="away-star">★ A. OKAFOR</small>
+            </div>
+          </div>
+          <div class="match-meta">
+            <div><span>STADIUM</span><strong id="match-stadium">THE YARD</strong></div>
+            <div><span>DIFFICULTY</span><strong id="match-difficulty">PRO</strong></div>
+            <div><span>HALVES</span><strong id="match-length">90 SEC</strong></div>
+          </div>
+          <button class="btn btn-lime wide" id="quick-kickoff" type="button">PLAY MATCH <span>↗</span></button>
+          <p class="card-note">Fan-made browser build. Not affiliated with First Touch Games. All clubs, kits and art are original.</p>
+        </aside>
+      </main>
+
+      <div class="home-strip">
+        <div class="strip-card"><span class="strip-icon">★</span><div><strong>DREAM SQUAD</strong><p>Pick a club, formation and star man.</p></div></div>
+        <div class="strip-card"><span class="strip-icon">◎</span><div><strong>MATCHDAY AI</strong><p>Three difficulty tiers. Eleven-v-eleven.</p></div></div>
+        <div class="strip-card"><span class="strip-icon">↯</span><div><strong>FULL CONTROL</strong><p>Pass, shoot, tackle and switch in real time.</p></div></div>
+        <div class="strip-card wide-card"><div class="controls-mini"><span><kbd>WASD</kbd> MOVE</span><span><kbd>SPACE</kbd> PASS</span><span><kbd>K</kbd> SHOOT</span><span><kbd>E</kbd> TACKLE</span><span><kbd>Q</kbd> SWITCH</span></div></div>
+      </div>
+    </section>
+
+    <section id="team-screen" class="screen panel-screen hidden">
+      <header class="panel-top">
+        <div class="panel-heading">
+          <button class="icon-btn" id="team-back" type="button" aria-label="Back">←</button>
+          <div><p class="eyebrow">MATCH SETUP</p><h1>CLUB SELECT</h1></div>
+        </div>
+        <div class="team-preview">
+          <div class="preview-team"><div class="preview-crest" id="team-home-badge"></div><div><span>YOUR CLUB</span><strong id="team-home-name">NORTHSIDE</strong></div></div>
+          <span class="preview-vs">VS</span>
+          <div class="preview-team away"><div class="preview-crest" id="team-away-badge"></div><div><span>OPPONENT</span><strong id="team-away-name">KINGSLEY</strong></div></div>
+        </div>
+      </header>
+      <div class="team-tabs">
+        <button class="tab-btn active" type="button" data-tab="home">YOUR CLUB</button>
+        <button class="tab-btn" type="button" data-tab="away">OPPONENT</button>
+        <span class="tab-hint" id="team-tab-hint">SELECT THE CLUB YOU WILL CONTROL</span>
+      </div>
+      <div class="team-grid" id="team-grid"></div>
+      <footer class="panel-footer">
+        <button class="btn btn-ghost" id="team-cancel" type="button">CANCEL</button>
+        <button class="btn btn-lime" id="team-continue" type="button">SET LINEUP <span>→</span></button>
+      </footer>
+    </section>
+
+    <section id="squad-screen" class="screen panel-screen hidden">
+      <header class="panel-top">
+        <div class="panel-heading">
+          <button class="icon-btn" id="squad-back" type="button" aria-label="Back">←</button>
+          <div><p class="eyebrow">TEAM MANAGEMENT</p><h1>SQUAD</h1></div>
+        </div>
+        <div class="squad-summary">
+          <div class="squad-crest" id="squad-badge"></div>
+          <div class="squad-meta"><span id="squad-city">NORTHSIDE</span><strong id="squad-team">NORTHSIDE FC</strong><small id="squad-star">★ J. VALE</small></div>
+          <div class="squad-ovr"><span>OVR</span><strong id="squad-rating">85</strong></div>
+        </div>
+      </header>
+      <div class="squad-layout">
+        <section class="pitch-card">
+          <div class="section-head"><span>STARTING XI</span><div class="formation-buttons" id="formation-control"></div></div>
+          <div class="squad-pitch" id="squad-pitch">
+            <div class="pitch-lines" aria-hidden="true"></div>
+          </div>
+        </section>
+        <aside class="squad-list-wrap">
+          <div class="section-head"><span>PLAYER LIST</span><span id="squad-formation-label">4-3-3 ATTACK</span></div>
+          <div class="squad-list" id="squad-list"></div>
+        </aside>
+      </div>
+      <footer class="panel-footer">
+        <button class="btn btn-ghost" id="squad-cancel" type="button">BACK</button>
+        <button class="btn btn-lime" id="squad-play" type="button">ENTER MATCH <span>↗</span></button>
+      </footer>
+    </section>
+
+    <section id="settings-screen" class="screen panel-screen hidden">
+      <header class="panel-top">
+        <div class="panel-heading">
+          <button class="icon-btn" id="settings-back" type="button" aria-label="Back">←</button>
+          <div><p class="eyebrow">SYSTEM</p><h1>SETTINGS</h1></div>
+        </div>
+        <div class="settings-badge">MATCH ENGINE // DLS26</div>
+      </header>
+      <div class="settings-grid">
+        <div class="settings-group">
+          <div class="section-head"><span>DIFFICULTY</span><span>AI STRENGTH</span></div>
+          <div class="segmented large" id="difficulty-control">
+            <button type="button" data-difficulty="amateur">AMATEUR</button>
+            <button type="button" data-difficulty="pro" class="active">PRO</button>
+            <button type="button" data-difficulty="legend">LEGEND</button>
+          </div>
+          <p class="settings-note">Difficulty changes opponent reaction speed, shooting accuracy and pressing intensity.</p>
+        </div>
+        <div class="settings-group">
+          <div class="section-head"><span>HALF LENGTH</span><span>ACCELERATED</span></div>
+          <div class="segmented large" id="half-control">
+            <button type="button" data-half="60">60 SEC</button>
+            <button type="button" data-half="90" class="active">90 SEC</button>
+            <button type="button" data-half="120">120 SEC</button>
+          </div>
+          <p class="settings-note">Each match has two halves. The clock is accelerated; stats and score carry across.</p>
+        </div>
+        <div class="settings-group">
+          <div class="section-head"><span>CAMERA</span><span>VIEW</span></div>
+          <div class="segmented large" id="camera-control">
+            <button type="button" data-camera="broadcast" class="active">BROADCAST</button>
+            <button type="button" data-camera="close">CLOSE</button>
+          </div>
+          <p class="settings-note">Broadcast follows the ball. Close follows your controlled player.</p>
+        </div>
+        <div class="settings-group">
+          <div class="section-head"><span>RENDER QUALITY</span><span>DEVICE</span></div>
+          <div class="segmented large" id="quality-control">
+            <button type="button" data-quality="high" class="active">HIGH</button>
+            <button type="button" data-quality="low">LOW</button>
+          </div>
+          <p class="settings-note">Low quality disables shadows for smoother play on integrated graphics.</p>
+        </div>
+        <div class="settings-group wide">
+          <div class="section-head"><span>AUDIO</span><span>STADIUM</span></div>
+          <label class="volume-row" for="volume">
+            <span>MASTER VOLUME</span>
+            <input id="volume" type="range" min="0" max="1" step="0.05" value="0.7" />
+            <output id="volume-value">70</output>
+          </label>
+        </div>
+        <div class="settings-group wide">
+          <div class="section-head"><span>CONTROLS</span><span>QUICK REFERENCE</span></div>
+          <div class="manual-grid">
+            <div><kbd>WASD</kbd><span>MOVE</span></div>
+            <div><kbd>SHIFT</kbd><span>SPRINT</span></div>
+            <div><kbd>SPACE</kbd><span>PASS</span></div>
+            <div><kbd>K</kbd><span>SHOOT / HOLD</span></div>
+            <div><kbd>E</kbd><span>TACKLE</span></div>
+            <div><kbd>Q</kbd><span>SWITCH PLAYER</span></div>
+            <div><kbd>P</kbd><span>PAUSE</span></div>
+            <div><kbd>M</kbd><span>MUTE</span></div>
+          </div>
+        </div>
+      </div>
+      <footer class="panel-footer">
+        <button class="btn btn-lime" id="settings-done" type="button">DONE</button>
+      </footer>
+    </section>
+
+    <div id="match-hud" class="hidden">
+      <div class="scorebar">
+        <div class="score-team">
+          <div class="hud-crest" id="hud-home-badge"></div>
+          <div><strong id="hud-home-short">NTH</strong><span>HOME</span></div>
+          <b id="hud-home-score">0</b>
+        </div>
+        <div class="score-center">
+          <span id="hud-clock">01:30</span>
+          <small id="hud-half">1ST HALF</small>
+        </div>
+        <div class="score-team away">
+          <b id="hud-away-score">0</b>
+          <div><strong id="hud-away-short">KGC</strong><span>AWAY</span></div>
+          <div class="hud-crest" id="hud-away-badge"></div>
+        </div>
+      </div>
+
+      <div class="event-toast" id="event-toast"></div>
+
+      <div class="radar-wrap">
+        <canvas id="radar" width="210" height="210" aria-label="Match radar"></canvas>
+        <div class="radar-label"><span>RADAR</span><span id="hud-possession">50% POSS</span></div>
+      </div>
+
+      <div class="match-status">
+        <span id="hud-shots">SHOTS 0 - 0</span>
+        <span class="status-dot"></span>
+        <span id="hud-passes">PASSES 0 - 0</span>
+        <span class="status-dot"></span>
+        <span id="hud-camera-mode">BROADCAST</span>
+      </div>
+
+      <div class="player-card">
+        <div class="player-ovr"><span>OVR</span><strong id="player-rating">86</strong></div>
+        <div class="player-identity"><span id="player-role">ST</span><strong id="player-name">J. VALE</strong><small>CONTROLLED</small></div>
+        <div class="player-number" id="player-number">9</div>
+        <div class="stamina"><span>STAMINA</span><div class="stamina-track"><i id="stamina-fill"></i></div></div>
+      </div>
+
+      <div class="power-meter" id="power-meter"><span>SHOT POWER</span><div><i id="power-fill"></i></div></div>
+
+      <div class="action-bar">
+        <button class="action-btn" id="action-pass" type="button"><span class="action-key">SPACE</span>PASS</button>
+        <button class="action-btn shoot" id="action-shoot" type="button"><span class="action-key">K</span>SHOOT</button>
+        <button class="action-btn" id="action-tackle" type="button"><span class="action-key">E</span>TACKLE</button>
+        <button class="action-btn" id="action-switch" type="button"><span class="action-key">Q</span>SWITCH</button>
+        <button class="action-btn sprint" id="action-sprint" type="button"><span class="action-key">SHIFT</span>SPRINT</button>
+      </div>
+
+      <div class="touch-stick hidden" id="stick-zone">
+        <div class="stick-base"><div class="stick-knob" id="stick-knob"></div></div>
+      </div>
+
+      <button class="match-pause" id="match-pause" type="button" aria-label="Pause"><span></span><span></span></button>
+
+      <div id="kickoff-overlay" class="match-overlay kickoff hidden">
+        <div class="kickoff-inner">
+          <p class="eyebrow">MATCHDAY</p>
+          <div class="kickoff-count" id="kickoff-count">3</div>
+          <h2 id="kickoff-team">NORTHSIDE FC</h2>
+          <p>KICK OFF</p>
+        </div>
+      </div>
+
+      <div id="goal-overlay" class="match-overlay goal hidden">
+        <div class="goal-rays" aria-hidden="true"></div>
+        <div class="goal-inner">
+          <p class="eyebrow">GOAL // DLS26</p>
+          <h2>GOAL<span>!</span></h2>
+          <div class="goal-team" id="goal-team">NORTHSIDE FC</div>
+          <div class="goal-scorer"><span id="goal-minute">23'</span><strong id="goal-scorer">J. VALE</strong><small>SCORER</small></div>
+          <div class="goal-assist" id="goal-assist">ASSIST // M. SANTOS</div>
+          <div class="goal-score" id="goal-score">1 - 0</div>
+        </div>
+      </div>
+
+      <div id="halftime-overlay" class="match-overlay halftime hidden">
+        <div class="halftime-inner">
+          <p class="eyebrow">HALF TIME</p>
+          <h2 id="halftime-score">0 - 0</h2>
+          <div class="halftime-stats" id="halftime-stats"></div>
+          <p class="halftime-note">SWITCHING ENDS // SECOND HALF</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="pause-screen" class="screen overlay-screen hidden">
+      <div class="pause-box">
+        <p class="eyebrow">MATCHDAY PAUSED</p>
+        <h1>TAKE A BREATH</h1>
+        <div class="pause-score" id="pause-score">0 - 0</div>
+        <p class="pause-copy">The stadium is waiting. Resume when you are ready.</p>
+        <div class="pause-actions">
+          <button class="btn btn-lime" id="resume-btn" type="button">RESUME</button>
+          <button class="btn btn-ghost" id="pause-settings" type="button">SETTINGS</button>
+          <button class="btn btn-ghost danger" id="pause-quit" type="button">QUIT MATCH</button>
+        </div>
+        <div class="pause-controls"><span><kbd>WASD</kbd> MOVE</span><span><kbd>SPACE</kbd> PASS</span><span><kbd>K</kbd> SHOOT</span><span><kbd>E</kbd> TACKLE</span><span><kbd>Q</kbd> SWITCH</span></div>
+      </div>
+    </div>
+
+    <div id="fulltime-screen" class="screen overlay-screen hidden">
+      <div class="results-box">
+        <p class="eyebrow" id="fulltime-eyebrow">FULL TIME // MATCHDAY</p>
+        <h1 id="fulltime-title">VICTORY</h1>
+        <div class="results-scoreline">
+          <div class="results-team"><div id="fulltime-home-badge"></div><span id="fulltime-home-name">NORTHSIDE</span></div>
+          <div class="results-numbers"><strong id="fulltime-home-score">0</strong><span>:</span><strong id="fulltime-away-score">0</strong></div>
+          <div class="results-team away"><div id="fulltime-away-badge"></div><span id="fulltime-away-name">KINGSLEY</span></div>
+        </div>
+        <div class="results-stats" id="fulltime-stats"></div>
+        <div class="mvp-card">
+          <div class="mvp-flag">MVP</div>
+          <div class="mvp-info"><span>PLAYER OF THE MATCH</span><strong id="mvp-name">J. VALE</strong><small id="mvp-meta">NORTHSIDE // ST</small></div>
+          <div class="mvp-rating" id="mvp-rating">92</div>
+        </div>
+        <div class="results-actions">
+          <button class="btn btn-lime" id="rematch-btn" type="button">PLAY AGAIN</button>
+          <button class="btn btn-ghost" id="to-menu-btn" type="button">MAIN MENU</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
