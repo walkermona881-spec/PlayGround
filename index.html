@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<meta name="theme-color" content="#07131f" />
+<title>Dream League Soccer 2026</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b1520'/%3E%3Ccircle cx='32' cy='32' r='19' fill='%239dff3d'/%3E%3Cpath d='M32 20l8 6-3 9H27l-3-9z' fill='%230b1520'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+<div id="app">
+  <canvas id="scene" aria-label="Dream League Soccer 2026 match view"></canvas>
+
+  <div id="loading">
+    <div class="loading-inner">
+      <div class="loading-ball"></div>
+      <div class="loading-title">DREAM LEAGUE SOCCER <b>2026</b></div>
+      <div class="loading-sub">BUILDING THE STADIUM</div>
+    </div>
+  </div>
+
+  <div id="hud" class="hidden">
+    <div id="topbar">
+      <div class="scorebug">
+        <div class="sb-team" id="sbHome">
+          <span class="sb-badge" id="homeBadge">NPT</span>
+          <span class="sb-name" id="homeName">NORTHPORT UTD</span>
+        </div>
+        <div class="sb-mid">
+          <div class="sb-score" id="score">0<span>–</span>0</div>
+          <div class="sb-clock"><span id="halfLabel">1ST HALF</span><span id="clock">00:00</span></div>
+        </div>
+        <div class="sb-team away" id="sbAway">
+          <span class="sb-name" id="awayName">REDBRIDGE FC</span>
+          <span class="sb-badge" id="awayBadge">RBC</span>
+        </div>
+      </div>
+      <button id="pauseBtn" class="icon-btn" aria-label="Pause">❚❚</button>
+      <button id="soundBtn" class="icon-btn" aria-label="Toggle sound">♪</button>
+    </div>
+
+    <div id="minimapWrap">
+      <div class="minimap-title">MATCH TRACKER</div>
+      <canvas id="minimap" width="220" height="150"></canvas>
+    </div>
+
+    <div id="playerHud">
+      <div class="ph-top">
+        <span class="ph-num" id="phNum">10</span>
+        <span class="ph-name" id="phName">A. SILVA</span>
+        <span class="ph-pos" id="phPos">CM</span>
+      </div>
+      <div class="stamina"><div id="staminaFill"></div></div>
+      <div class="ph-label">STAMINA</div>
+    </div>
+
+    <div id="powerWrap" class="hidden">
+      <div class="power-label">SHOT POWER</div>
+      <div class="power-track"><div id="powerFill"></div></div>
+    </div>
+
+    <div id="commentary"></div>
+    <div id="toast"></div>
+
+    <div id="controlsHint">
+      <span><b>WASD</b> MOVE</span>
+      <span><b>SHIFT</b> SPRINT</span>
+      <span><b>SPACE</b> PASS</span>
+      <span><b>K / CLICK</b> SHOOT</span>
+      <span><b>P</b> PAUSE</span>
+    </div>
+
+    <div id="touchUI">
+      <div id="joystick"><div id="stick"></div></div>
+      <div class="touch-buttons">
+        <button id="btnSprint" class="t-btn small">⚡</button>
+        <button id="btnPass" class="t-btn">PASS</button>
+        <button id="btnShoot" class="t-btn shoot">SHOOT</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="goalOverlay" class="hidden">
+    <div class="goal-glow"></div>
+    <div class="goal-word">GOAL<span>!</span></div>
+    <div class="goal-sub" id="goalSub">NORTHPORT UNITED</div>
+    <div class="goal-scorer" id="goalScorer">A. SILVA · 23'</div>
+  </div>
+
+  <div id="startMenu" class="menu-layer">
+    <div class="menu-panel">
+      <header class="brand">
+        <div class="brand-kicker">THE BEAUTIFUL GAME · 2026 SEASON</div>
+        <h1>DREAM LEAGUE<br /><span>SOCCER</span> <b>2026</b></h1>
+        <p class="brand-sub">Full 11-a-side football. Choose your club, take the pitch and chase the trophy.</p>
+      </header>
+
+      <section class="menu-section">
+        <div class="section-head"><span>SELECT YOUR CLUB</span><i id="clubRating">★ ★ ★ ★ ☆</i></div>
+        <div class="team-grid" id="teamGrid"></div>
+      </section>
+
+      <section class="menu-section options">
+        <div class="option-group">
+          <div class="option-label">DIFFICULTY</div>
+          <div class="seg" id="difficultySeg">
+            <button data-value="0">AMATEUR</button>
+            <button data-value="1" class="active">PRO</button>
+            <button data-value="2">WORLD CLASS</button>
+            <button data-value="3">LEGEND</button>
+          </div>
+        </div>
+        <div class="option-group">
+          <div class="option-label">HALF LENGTH</div>
+          <div class="seg" id="lengthSeg">
+            <button data-value="60">1 MIN</button>
+            <button data-value="90" class="active">90 SEC</button>
+            <button data-value="120">2 MIN</button>
+          </div>
+        </div>
+      </section>
+
+      <footer class="menu-actions">
+        <button id="kickoffBtn" class="primary-btn"><span>KICK OFF</span><small>ENTER THE STADIUM</small></button>
+        <button id="demoBtn" class="ghost-btn">WATCH AI DEMO</button>
+      </footer>
+      <div class="menu-foot">WASD / ARROWS MOVE &nbsp;·&nbsp; SHIFT SPRINT &nbsp;·&nbsp; SPACE PASS &nbsp;·&nbsp; K / CLICK SHOOT &nbsp;·&nbsp; P PAUSE</div>
+    </div>
+    <div class="menu-side">
+      <div class="side-tag">LIVE FROM THE OMG ARENA</div>
+      <div class="side-lineup">
+        <div class="side-row"><span>FORMAT</span><b>11 v 11</b></div>
+        <div class="side-row"><span>STADIUM</span><b>OMG ARENA</b></div>
+        <div class="side-row"><span>WEATHER</span><b>GOLDEN HOUR</b></div>
+        <div class="side-row"><span>ATTENDANCE</span><b>62,480</b></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="pauseMenu" class="overlay hidden">
+    <div class="overlay-card">
+      <div class="overlay-kicker">MATCH PAUSED</div>
+      <h2>TAKE A BREATH</h2>
+      <div class="score-line" id="pauseScore">0 – 0</div>
+      <div class="overlay-actions">
+        <button id="resumeBtn" class="primary-btn"><span>RESUME</span><small>BACK TO THE PITCH</small></button>
+        <button id="restartBtn" class="ghost-btn">RESTART MATCH</button>
+        <button id="quitBtn" class="ghost-btn">MAIN MENU</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="fullTime" class="overlay hidden">
+    <div class="overlay-card wide">
+      <div class="overlay-kicker">FULL TIME</div>
+      <h2 id="ftResult">NORTHPORT UNITED WIN</h2>
+      <div class="score-line" id="ftScore">0 – 0</div>
+      <div class="stats" id="ftStats"></div>
+      <div class="overlay-actions row">
+        <button id="rematchBtn" class="primary-btn"><span>REMATCH</span><small>SAME CLUBS</small></button>
+        <button id="menuBtn" class="ghost-btn">MAIN MENU</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="rotateHint">ROTATE YOUR DEVICE FOR THE BEST VIEW</div>
+</div>
+
+<script type="module" src="./js/main.js"></script>
+</body>
+</html>
